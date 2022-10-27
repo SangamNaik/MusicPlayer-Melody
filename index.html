@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Melody</title>
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li class="logo">
+          <img src="./assets/logo.png" alt="Musicplayer Logo" />
+          <span>Melody</span>
+        </li>
+        <li>More Songs</li>
+        <li>About</li>
+      </ul>
+    </nav>
+
+    <div class="container">
+      <div class="songList">
+        <h1>My Favourite Songs</h1>
+        <div class="songs">
+          <div class="songItem">
+            <img src="./assets/covers/1.jpg" alt="Perfect Song Cover" />
+            <span class="songName">Perfect</span>
+            <span class="songListPlay">
+              <span class="timestamp"></span>
+              <span
+                ><i id="0" class="fa-regular fa-circle-play songItemPlay"></i
+              ></span>
+            </span>
+          </div>
+          <div class="songItem">
+            <img src="./assets/covers/1.jpg" alt="Perfect Song Cover" />
+            <span class="songName">Perfect</span>
+            <span class="songListPlay">
+              <span class="timestamp"></span>
+              <span
+                ><i id="1" class="fa-regular fa-circle-play songItemPlay"></i
+              ></span>
+            </span>
+          </div>
+          <div class="songItem">
+            <img src="./assets/covers/1.jpg" alt="Perfect Song Cover" />
+            <span class="songName">Perfect</span>
+            <span class="songListPlay">
+              <span class="timestamp"></span>
+              <span
+                ><i id="2" class="fa-regular fa-circle-play songItemPlay"></i
+              ></span>
+            </span>
+          </div>
+          <div class="songItem">
+            <img src="./assets/covers/1.jpg" alt="Perfect Song Cover" />
+            <span class="songName">Perfect</span>
+            <span class="songListPlay">
+              <span class="timestamp"></span>
+              <span
+                ><i id="3" class="fa-regular fa-circle-play songItemPlay"></i
+              ></span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="songBanner">
+        <h2 class="songBannerHeading"></h2>
+        <img id="currentSongPoster" src="" alt="" />
+        <img
+          class="musicSpectrum"
+          src="https://media4.giphy.com/media/mXbQ2IU02cGRhBO2ye/giphy.gif"
+          alt=""
+        />
+      </div>
+    </div>
+
+    <div class="bottom">
+      <div class="songProgressBar">
+        <span>0:00</span>
+        <input
+          type="range"
+          name="range"
+          id="myProgressBar"
+          min="0"
+          max="100"
+          value="0"
+        />
+        <span class="songDuration"></span>
+      </div>
+      <div class="icons">
+        <!-- fontawesome icons -->
+        <i id="previous" class="fa-sharp fa-solid fa-3x fa-backward-step"></i>
+        <i class="fa-regular fa-3x fa-circle-play" id="masterPlay"></i>
+        <i id="next" class="fa-sharp fa-solid fa-3x fa-forward-step"></i>
+      </div>
+    </div>
+    <script
+      src="https://kit.fontawesome.com/4118e4dc9b.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="script.js"></script>
+  </body>
+</html>
