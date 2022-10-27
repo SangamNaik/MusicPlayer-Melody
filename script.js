@@ -13,31 +13,32 @@ const playSelectedSongs = Array.from(
   document.getElementsByClassName('songItemPlay')
 );
 const songDuration = document.querySelector('.songDuration');
+const currentTimeStamp = document.getElementById('currentTimeStamp');
 
 let songs = [
   {
     songName: 'Perfect ~ Ed Sheeran',
     filePath: 'assets/songs/1.mp3',
     coverPath: 'assets/covers/1.jpg',
-    duration: '04:23',
+    duration: '4:23',
   },
   {
     songName: 'Kesariya ~ Arijit Singh',
     filePath: 'assets/songs/2.mp3',
     coverPath: 'assets/covers/2.jpg',
-    duration: '02:52',
+    duration: '2:52',
   },
   {
     songName: 'Calm Down ~ Rema & Selena Gomez',
     filePath: 'assets/songs/3.mp3',
     coverPath: 'assets/covers/3.jpg',
-    duration: '03:59',
+    duration: '3:59',
   },
   {
     songName: 'Baarishein ~ Anuv Jain',
     filePath: 'assets/songs/4.mp3',
     coverPath: 'assets/covers/4.jpg',
-    duration: '03:24',
+    duration: '3:24',
   },
 ];
 
@@ -47,7 +48,7 @@ songItems.forEach((element, i) => {
   element.getElementsByClassName('timestamp')[0].innerText = songs[i].duration;
 });
 
-masterPlay.addEventListener('click', () => {
+function songPlayPause() {
   if (audioElement.paused || audioElement.currentTime <= 0) {
     index = audioElement.src.slice(-5)[0];
     songBannerHeading.innerText = 'Now Playing';
@@ -72,16 +73,16 @@ masterPlay.addEventListener('click', () => {
     masterPlay.classList.remove('fa-circle-pause');
     masterPlay.classList.add('fa-circle-play');
   }
-});
+}
 
-audioElement.addEventListener('timeupdate', () => {
-  progress = parseInt((audioElement.currentTime / audioElement.duration) * 100);
-  myProgressBar.value = progress;
-});
+document.body.onkeyup = function (e) {
+  if (e.key == ' ' || e.code == 'Space' || e.keyCode == 32) {
+    songPlayPause();
+  }
+};
 
-myProgressBar.addEventListener('change', () => {
-  audioElement.currentTime =
-    (myProgressBar.value * audioElement.duration) / 100;
+masterPlay.addEventListener('click', () => {
+  songPlayPause();
 });
 
 const makeAllPlays = () => {
@@ -91,23 +92,27 @@ const makeAllPlays = () => {
   });
 };
 
+function playSong(songIndex) {
+  audioElement.src = `assets/songs/${songIndex + 1}.mp3`;
+  audioElement.currentTime = 0;
+  songBannerHeading.innerText = 'Now Playing';
+  currentSongPoster.src = `assets/covers/${songIndex + 1}.jpg`;
+  musicSpectrum.style.opacity = 1;
+  musicSpectrum.style.display = 'block';
+  mainContainer.style.backgroundImage = "url('./assets/bg_blurred.jpg')";
+  songDuration.innerText = songs[songIndex].duration;
+  audioElement.play();
+  masterPlay.classList.remove('fa-circle-play');
+  masterPlay.classList.add('fa-circle-pause');
+}
+
 playSelectedSongs.forEach((element) => {
   element.addEventListener('click', (e) => {
     makeAllPlays();
     songIndex = parseInt(e.target.id);
     e.target.classList.remove('fa-circle-play');
     e.target.classList.add('fa-circle-pause');
-    audioElement.src = `assets/songs/${songIndex + 1}.mp3`;
-    audioElement.currentTime = 0;
-    songBannerHeading.innerText = 'Now Playing';
-    currentSongPoster.src = `assets/covers/${songIndex + 1}.jpg`;
-    musicSpectrum.style.opacity = 1;
-    musicSpectrum.style.display = 'block';
-    mainContainer.style.backgroundImage = "url('./assets/bg_blurred.jpg')";
-    songDuration.innerText = songs[songIndex].duration;
-    audioElement.play();
-    masterPlay.classList.remove('fa-circle-play');
-    masterPlay.classList.add('fa-circle-pause');
+    playSong(songIndex);
   });
 });
 
@@ -117,17 +122,8 @@ nextIcon.addEventListener('click', () => {
   } else {
     songIndex += 1;
   }
-  audioElement.src = `assets/songs/${songIndex + 1}.mp3`;
-  audioElement.currentTime = 0;
-  songBannerHeading.innerText = 'Now Playing';
-  currentSongPoster.src = `assets/covers/${songIndex + 1}.jpg`;
-  musicSpectrum.style.opacity = 1;
-  musicSpectrum.style.display = 'block';
-  mainContainer.style.backgroundImage = "url('./assets/bg_blurred.jpg')";
-  songDuration.innerText = songs[songIndex].duration;
-  audioElement.play();
-  masterPlay.classList.remove('fa-circle-play');
-  masterPlay.classList.add('fa-circle-pause');
+  playSong(songIndex);
+  makeAllPlays();
 });
 
 previousIcon.addEventListener('click', () => {
@@ -136,15 +132,29 @@ previousIcon.addEventListener('click', () => {
   } else {
     songIndex -= 1;
   }
-  audioElement.src = `assets/songs/${songIndex + 1}.mp3`;
-  audioElement.currentTime = 0;
-  songBannerHeading.innerText = 'Now Playing';
-  currentSongPoster.src = `assets/covers/${songIndex + 1}.jpg`;
-  musicSpectrum.style.opacity = 1;
-  musicSpectrum.style.display = 'block';
-  mainContainer.style.backgroundImage = "url('./assets/bg_blurred.jpg')";
-  songDuration.innerText = songs[songIndex].duration;
-  audioElement.play();
-  masterPlay.classList.remove('fa-circle-play');
-  masterPlay.classList.add('fa-circle-pause');
+  playSong(songIndex);
+  makeAllPlays();
+});
+
+audioElement.addEventListener('timeupdate', () => {
+  let currentSongTimeStamp = audioElement.currentTime;
+  let minTimeStamp = Math.floor(currentSongTimeStamp / 60);
+  let secTimeStamp = Math.floor(currentSongTimeStamp % 60);
+  currentTimeStamp.innerText = `${minTimeStamp}:${
+    secTimeStamp < 10 ? `0${secTimeStamp}` : `${secTimeStamp}`
+  }`;
+  progress = parseInt((audioElement.currentTime / audioElement.duration) * 100);
+  myProgressBar.value = progress;
+
+  index = audioElement.src.slice(-5)[0];
+  // console.log(songs[index - 1].duration);
+  // console.log(currentTimeStamp.innerText);
+  if (currentTimeStamp.innerText === songs[index - 1].duration) {
+    playSong(+index);
+  }
+});
+
+myProgressBar.addEventListener('change', () => {
+  audioElement.currentTime =
+    (myProgressBar.value * audioElement.duration) / 100;
 });
