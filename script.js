@@ -60,6 +60,7 @@ function songPlayPause() {
     audioElement.play();
     playSelectedSongs[index - 1].classList.remove('fa-circle-play');
     playSelectedSongs[index - 1].classList.add('fa-circle-pause');
+    playSelectedSongs[index - 1].style.color = 'white';
     masterPlay.classList.remove('fa-circle-play');
     masterPlay.classList.add('fa-circle-pause');
   } else {
@@ -89,6 +90,7 @@ const makeAllPlays = () => {
   playSelectedSongs.forEach((element) => {
     element.classList.remove('fa-circle-pause');
     element.classList.add('fa-circle-play');
+    element.style.color = 'black';
   });
 };
 
@@ -102,6 +104,7 @@ function playSong(songIndex) {
   mainContainer.style.backgroundImage = "url('./assets/bg_blurred.jpg')";
   songDuration.innerText = songs[songIndex].duration;
   audioElement.play();
+
   masterPlay.classList.remove('fa-circle-play');
   masterPlay.classList.add('fa-circle-pause');
 }
@@ -109,10 +112,18 @@ function playSong(songIndex) {
 playSelectedSongs.forEach((element) => {
   element.addEventListener('click', (e) => {
     makeAllPlays();
+
     songIndex = parseInt(e.target.id);
-    e.target.classList.remove('fa-circle-play');
-    e.target.classList.add('fa-circle-pause');
-    playSong(songIndex);
+    if (e.target.classList === 'fa-circle-pause') {
+      e.target.classList.add('fa-circle-play');
+      e.target.classList.remove('fa-circle-pause');
+      songPlayPause();
+    } else {
+      e.target.classList.remove('fa-circle-play');
+      e.target.classList.add('fa-circle-pause');
+      playSong(songIndex);
+      e.target.style.color = 'white';
+    }
   });
 });
 
